@@ -1,0 +1,97 @@
+<Page ux:Class="Year">
+	<JavaScript File = "year.js"/>
+	<DockPanel Width="100%" Height="100%"  HitTestMode="LocalBoundsAndChildren">
+			<Text Value="Choose Starting Year" Font="appFont" FontSize="25" Color="White" Alignment="Center" Dock="Top"  Margin="0,40,0,0"/>
+			<Panel ux:Name="self" Width="150" Height="50" Color="#9F9F9F" Opacity="0.5" Margin="0,0,0,50">
+
+				<Circle ux:Name="decrease" Width="50" Height="50" Color="#9F9F9F" Dock="Left" Opacity="0" Alignment="CenterLeft" Y="-50" Visibility="Hidden">
+					<LayoutAnimation>
+						<Move X="1" Y="1" RelativeTo="LayoutChange" Duration="0.25"/>
+					</LayoutAnimation>
+					<Rectangle>
+						<ImageFill File="icons/back-black.png"/>
+						<Rotation Degrees="270"/>
+					</Rectangle>
+
+					<WhilePressed>
+						<Callback Handler="{moveDown}"/>
+					</WhilePressed>
+				</Circle>
+				<Circle ux:Name="increase" Width="50" Height="50" Color="#9F9F9F" Dock="Right" Alignment="CenterRight" Opacity="0" Y="50" Visibility="Hidden">
+					<LayoutAnimation>
+						<Move X="1" Y="1" RelativeTo="LayoutChange" Duration="0.25"/>
+					</LayoutAnimation>
+					<Rectangle>
+						<ImageFill File="icons/back-black.png"/>
+						<Rotation Degrees="90"/>
+					</Rectangle>
+					<WhilePressed>
+						<Callback Handler="{moveUp}"/>
+					</WhilePressed>
+				</Circle>
+
+				<Text Value="{year}" Alignment="Center" Font="appFont" FontSize="25" Color="Black"/>
+
+				<WhileTrue Value="{yearInput}">
+					<SwipeGesture Direction="Up" ux:Name="SwipeUp" Length="20"/>
+					<Swiped Source="SwipeUp">
+						<Callback Handler="{moveUp}"/>
+					</Swiped>
+
+					<SwipeGesture Direction="Down" ux:Name="SwipeDown" Length="20"/>
+					<Swiped Source="SwipeDown">
+						<Callback Handler="{moveDown}"/>
+					</Swiped>
+				</WhileTrue>
+
+				<Clicked Handler="{enableYearFiltering}"/>
+				<LayoutAnimation>
+		            <Resize X="1" Y="1" RelativeTo="LayoutChange" Duration="0.25"/>
+		            <Move X="1" Y="1" RelativeTo="LayoutChange" Duration="0.25"/>
+		        </LayoutAnimation>
+			</Panel>
+
+			<WhileTrue Value="{yearInput}">
+				<Panel Alignment="Bottom" Height="11%" Width="100%" Margin="0,0,0,10">
+					<Rectangle ux:Name="resetB" Alignment="CenterLeft" Width="30%" Height="70%" MaxWidth="200" Color="Teal" CornerRadius="25" Margin="20,0,0,0" Opacity="0">
+						<Text Value="Reset" Alignment="Center" Font="appFont" FontSize="25" Color="White"/>
+						<Clicked Handler="{disableYearFiltering}"/>
+						<WhilePressed>
+							<Scale Factor=".85" Duration=".08" Easing="QuadraticInOut" />
+						</WhilePressed>
+					</Rectangle>
+				</Panel>
+			</WhileTrue>
+
+			<WhileTrue Value="{toggleReset}">
+				<Set self.Width="70%"/>
+				<Set self.Height="25%"/>
+				<Set self.Color="#fed166"/>
+				<Set decrease.Color="#fed166"/>
+				<Set increase.Color="#fed166"/>
+				<Change self.Opacity="1" Duration="0.25"/>
+				<Change resetB.Opacity="1" Duration="0.25"/>
+				<Change decrease.Opacity="1" Delay=".25" Duration=".25"/>
+				<Set decrease.Y="0" Delay=".23"/>
+				<Set decrease.Visibility="Visible"/>
+				<Change increase.Opacity="1" Delay=".25" Duration=".25"/>
+				<Set increase.Y="0" Delay=".23"/>
+				<Set increase.Visibility="Visible"/>
+			</WhileTrue>
+			<WhileFalse Value="{toggleReset}">
+				<Set self.Width="150" Delay=".25"/>
+				<Set self.Height="50" Delay=".25"/>
+				<Set self.Color="#9F9F9F" Delay=".25"/>
+				<Set decrease.Color="#9F9F9F" Delay=".25"/>
+				<Set increase.Color="#9F9F9F" Delay=".25"/>
+				<Change self.Opacity="0.5" Duration="0.25"/>
+				<Change resetB.Opacity="0" Duration="0.25"/>
+				<Change decrease.Opacity="0" Duration=".25"/>
+				<Set decrease.Y="-50" />
+				<Set decrease.Visibility="Hidden" Delay="0.25"/>
+				<Change increase.Opacity="0" Duration=".25"/>
+				<Set increase.Y="50" />
+				<Set increase.Visibility="Hidden" Delay="0.25"/>
+			</WhileFalse>
+	</DockPanel>
+</Page>

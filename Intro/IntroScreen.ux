@@ -1,0 +1,95 @@
+<DefaultPage ux:Class="IntroScreen" Color="#41414C">
+	<Router ux:Dependency="router"/>
+	<DockPanel>
+		<StatusBarBackground Dock="Top" Background="#41414C"/>
+		<BottomBarBackground Dock="Bottom" Background="#41414C"/>
+		<DockPanel>
+			<Text Value="Movie Time" Font="appFont" FontSize="30" TextColor="#fff" Dock="Top" Alignment="Center" Margin="0,20,0,0"/>
+			<PageControl ux:Name="navigation" Color="#41414C" Active="{activePage}" >
+				<NavigationMotion GotoEasing="CubicInOut"/>
+				<Page ux:Name="firstPage" HitTestMode="LocalBoundsAndChildren" ClipToBounds="true">
+					<DockPanel>
+						<Image File="../icons/introIcons/Clapperboard.png" Width="100" Height="100" StretchMode="Uniform"/>
+						<Text Value="Find a movie to watch based on your preferences" TextWrapping="Wrap" Dock="Bottom" Font="appFont" FontSize="16" TextColor="#fff" TextAlignment="Center" Margin="5,0,5,20"/>
+					</DockPanel>
+					<WhileActive>
+						<Callback Handler="{currentPage}"/>
+					</WhileActive>
+				</Page>
+				<Page ux:Name="secondPage" HitTestMode="LocalBoundsAndChildren" ClipToBounds="true">
+					<DockPanel>
+						<Text Value="Swipe up to get more information" TextWrapping="Wrap" Font="appFont" FontSize="16" TextColor="#fff" TextAlignment="Center" Margin="0,10,0,0"/>
+						<Rectangle Height="90%" Dock="Bottom">
+							<Image File="../icons/introIcons/Frame.png" StretchMode="Scale9" Width="45%" MinWidth="260" Scale9Margin="0,0,0,0" >
+								<Rectangle Width="90%" Height="78%" Alignment="Center" Margin="0,0,0,10">
+									<introFirstCard />
+								</Rectangle>
+							</Image>
+						</Rectangle>
+					</DockPanel>
+					<WhileActive>
+						<Callback Handler="{currentPage}"/>
+					</WhileActive>
+				</Page>
+				<Page ux:Name="thirdPage" HitTestMode="LocalBoundsAndChildren" ClipToBounds="true">
+					<DockPanel>
+						<Text Value="Tap for full description" TextWrapping="Wrap" Font="appFont" FontSize="16" TextColor="#fff" TextAlignment="Center" Margin="0,10,0,0"/>
+						<Rectangle Height="90%" Dock="Bottom">
+							<Image File="../icons/introIcons/Frame.png" StretchMode="Scale9" Width="45%" MinWidth="260" Scale9Margin="0,0,0,0" >
+								<Rectangle Width="90%" Height="78%" Alignment="Center" Margin="0,0,0,10">
+									<introSecondCard />
+								</Rectangle>
+							</Image>
+						</Rectangle>
+					</DockPanel>
+					<ActivatingAnimation>
+						<Change nextText.Value="Let's Roll"/>
+					</ActivatingAnimation>
+					<WhileActive>
+						<Callback Handler="{currentPage}"/>
+					</WhileActive>
+				</Page>
+			</PageControl>
+
+			<Panel Dock="Bottom" Height="10%">
+				<Grid Columns="3*,auto,3*">
+					<Rectangle>
+						<Panel Layer="Background" ClipToBounds="true">
+							<Circle ux:Name="Skipcircle" Fill="#5a5a6a" Opacity="0"/>
+						</Panel>
+						<Text Value="Skip" Font="appFont" FontSize="18" TextColor="#fff" Alignment="Center" Column="0"/>
+						<Clicked Handler="{endIntro}"/>
+						<WhilePressed>
+							<Scale Factor=".9" Duration=".08" Easing="QuadraticInOut" />
+							<Scale Target="Skipcircle" Factor="3" Duration="0.15"/>
+					        <Change Skipcircle.Opacity="1" Duration="0.2"/>
+						</WhilePressed>
+					</Rectangle>
+					<PageIndicator ux:Name="pageIndicator" Navigation="navigation" Alignment="Center" Column="1">
+						<Circle ux:Template="Dot" ux:Name="dotFac" Color="#41414C" Margin="5" Width="10" Height="20">
+							<Stroke Width="1">
+								<SolidColor Color="#fff"/>
+							</Stroke>
+							<ActivatingAnimation>
+								<Scale Factor="1.1"/>
+								<Change dotFac.Color="#EC6164" />
+							</ActivatingAnimation>
+						</Circle>
+					</PageIndicator>
+					<Rectangle>
+						<Panel Layer="Background" ClipToBounds="true">
+							<Circle ux:Name="circle" Fill="#5a5a6a" Opacity="0"/>
+						</Panel>
+						<Text ux:Name="nextText" Value="Next" Font="appFont" FontSize="18" TextColor="#fff" Alignment="Center" Column="2"/>
+						<Clicked Handler="{nextPage}"/>
+						<WhilePressed>
+							<Scale Factor=".9" Duration=".08" Easing="QuadraticInOut" />
+							<Scale Target="circle" Factor="3" Duration="0.15"/>
+							<Change circle.Opacity="1" Duration="0.2"/>
+						</WhilePressed>
+					</Rectangle>
+				</Grid>
+			</Panel>
+		</DockPanel>
+	</DockPanel>
+</DefaultPage>

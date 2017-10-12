@@ -1,0 +1,64 @@
+<DockPanel ux:Class="introFirstCard" >
+	<Panel ux:Class="Swipping" TimeOn="0.1" TimeOff="0.75" Frequency="0.6">
+		<double ux:Property="TimeOn"/>
+		<double ux:Property="TimeOff"/>
+		<double ux:Property="Frequency"/>
+
+		<Image ux:Name="swipe" File="../icons/introIcons/swipeIcon.png" Width="45" Height="45" Y="-75" Opacity="1">
+			<Rotation Degrees="-90"/>
+		</Image>
+		<Timeline ux:Name="scaleIcon">
+			<Change swipe.Y="75" Duration="0.8"/>
+			<Nothing Delay="{Property this.TimeOn}" Duration="{Property this.TimeOff}"/>
+		</Timeline>
+		<WhileTrue Value="true" Bypass="Never">
+			<Cycle Waveform="Sine" Target="scaleIcon.Progress" Frequency="{Property this.Frequency}" Low="0" High="1"/>
+		</WhileTrue>
+	</Panel>
+
+	<Panel ux:Name="cardPanel" Width="75%" MaxWidth="500" Height="70%" Alignment="Center">
+		<SwipeGesture ux:Name="swipe" Direction="Up" Type="Active" />
+	    <SwipingAnimation Source="swipe">
+	    	<Move Target="cardPanel" Y="-0.25" RelativeTo="Size" Duration="0.5" />
+		    <Change bottomPanelScaling.X="1" Duration="0.5" />
+		    <Change bottomPanelScaling.Y="1" Duration="0.5" />
+		    <Change bottomPanel.Opacity="1" Duration="0.5" />
+			<Change swipeIcon.Visibility="Hidden"/>
+	    </SwipingAnimation>
+
+		<Swipping ux:Name="swipeIcon" Alignment="Center" Visibility="Visible"/>
+
+		<Rectangle ux:Name="topPanel" Layer="Background" CornerRadius="5">
+			<ImageFill File="../icons/introIcons/showPoster.jpg" StretchMode="Scale9"/>
+		</Rectangle>
+		<DropShadow />
+    </Panel>
+
+	<Panel ux:Name="bottomPanel" Width="85%" MaxWidth="550" Height="85%" Opacity="0">
+      	<Rectangle Layer="Background" Color="White" CornerRadius="5" />
+      	<Scaling ux:Name="bottomPanelScaling" Y="0.8" X="0.85" />
+
+		<StackPanel Alignment="Bottom" ContentAlignment="Top" Height="25%" Margin="5">
+			<Grid Columns="8*,2*">
+				<Text Value="Fight Club" Font="appFont" FontSize="15" TextWrapping="Wrap" Column="0" TextColor="#000" TextAlignment="Left" Margin="3,0,0,0" />
+				<Grid Columns="auto,auto" >
+                    <Image File="../icons/duration.png" Height="14" Width="14" Color="Black" Alignment="Center"/>
+                    <Text Value="139" Font="appFont" FontSize="9" Column="1" TextColor="#000" Opacity="0.7" Margin="3,4,0,0" Alignment="Center"/>
+                </Grid>
+			</Grid>
+
+			<Grid Columns="7*,3*">
+    			<Text Value="Drama" Column="0" Font="appFont" FontSize="12" TextWrapping="Wrap" TextColor="#000" TextAlignment="Left" Opacity="0.6" Margin="3,0,0,0" />
+				<Image File="../icons/introIcons/filledStars.png" Height="19" Alignment="CenterLeft"/>
+            </Grid>
+
+			<Grid Rows="auto,auto" Columns="auto,auto" Alignment="Bottom" Margin="3,0,0,0">
+				<Text Value="Director: " Font="appFont" FontSize="11" Row="0" Column="0" TextColor="#000" Alignment="Left" Margin="0,0,0,0" />
+				<Text Value="D.Fincher" Font="appFont" FontSize="11" Row="0" Column="1" TextColor="#000" Opacity="0.7" TextAlignment="Center" Alignment="CenterLeft" Margin="3,0,0,0" />
+				<Text Value="Starring: " Font="appFont" FontSize="11" Row="1" Column="0" TextColor="#000" TextAlignment="Center" Alignment="Left" Margin="0,0,0,0" />
+				<Text Value="E.Norton, B.Pitt" Font="appFont" FontSize="11" Row="1" Column="1" TextColor="#000" Opacity="0.7" TextAlignment="Center" Alignment="CenterLeft" Margin="3,0,0,0" />
+			</Grid>
+		</StackPanel>
+      	<DropShadow />
+    </Panel>
+</DockPanel>

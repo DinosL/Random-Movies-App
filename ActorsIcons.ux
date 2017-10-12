@@ -1,0 +1,13 @@
+<StackPanel ux:Class="ActorIcon">
+	<FileImageSource ux:Key="noImage" File="icons/No_image_available.png" />
+	<HttpImageSource ux:Key="image" Url="{profilePic}"/>
+
+	<Circle Height="70" Width="70" Color="#212831">
+		<Clicked>
+			<Callback Handler="{findActor}"/>
+		</Clicked>
+		<ImageFill Source="{DataToResource imageKey}" />
+	</Circle>
+	<Text Value="{name}" FontSize="13" Color="White" Width="100" Font="appFont" TextAlignment="Center" TextWrapping="Wrap" Margin="0,5,0,0"/>
+	<Text Value="{character}" FontSize="13" Color="#b7bcc0" Width="100" Font="appFont" TextAlignment="Center" TextWrapping="Wrap"/>
+</StackPanel>

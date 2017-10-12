@@ -1,0 +1,83 @@
+<DefaultPage ux:Class="SideBar" >
+	<Router ux:Dependency="router"/>
+	<OnBackButton Handler="{backKey}"/>
+
+	<DockPanel>
+		<StatusBarBackground Dock="Top" Background="#212831"/>
+		<BottomBarBackground Dock="Bottom" Background="#212831"/>
+
+		<DockPanel Background="#212831">
+			<MultiLayoutPanel Dock="Top" Height="5%" Margin="0,10,0,0" ux:Name="tabBar">
+				<Grid ColumnCount="4" Columns="3*,3*,3*,1*" Background="#212831">
+					<HomePageTab ux:Name="movieTab" Label="Movies" textColor="#fff" pageControl="pageControl" page="movies">
+						<Placeholder>
+							<Rectangle ux:Name="indicator" Height="1" Fill="#fed166" Alignment="Bottom" >
+								<LayoutAnimation>
+				                	<Move RelativeTo="LayoutChange" X="1" Duration="0.4" Easing="BackOut"/>
+				                </LayoutAnimation>
+				            </Rectangle>
+				        </Placeholder>
+					</HomePageTab>
+					<HomePageTab ux:Name="genreTab" Label="Genres" textColor="#fff" pageControl="pageControl" page="genres">
+						<Placeholder  Target="indicator"/>
+					</HomePageTab>
+					<HomePageTab ux:Name="yearTab" Label="Year" textColor="#fff" pageControl="pageControl" page="year">
+						<Placeholder  Target="indicator"/>
+					</HomePageTab>
+					<Panel Margin="0,0,15,0" Height="32" Width="32" HitTestMode="LocalBounds">
+						<Clicked Handler="{navigatorActionMainPage}">
+							<Set tabBar.LayoutElement="movieTab"/>
+						</Clicked>
+						<Rectangle ux:Name="topRectangle" Height="2" Width="26" Fill="#fed166">
+							<Rotation Degrees="45"/>
+						</Rectangle>
+						<Rectangle ux:Name="bottomRectangle" Height="2" Width="26" Fill="#fed166">
+							<Rotation Degrees="-45" />
+						</Rectangle>
+						<WhilePressed>
+							<Scale Factor=".85" Duration=".08" Easing="QuadraticInOut" />
+						</WhilePressed>
+					</Panel>
+				</Grid>
+			</MultiLayoutPanel>
+
+			<WhileTrue ux:Name="saveButton" Value="{backButton}">
+				<Panel Alignment="Bottom" Height="10%" Width="100%" Margin="0,0,0,10">
+					<Rectangle Alignment="CenterRight" Width="30%" Height="70%" MaxWidth="200" Color="White" CornerRadius="25" Margin="0,0,20,0">
+						<Text Value="{applyButtonText}" Alignment="Center" Font="appFont" FontSize="25" Color="Teal"/>
+						<Clicked Handler="{navigatorActionMainPage}">
+							<Set tabBar.LayoutElement="movieTab"/>
+						</Clicked>
+						<WhilePressed>
+							<Scale Factor=".85" Duration=".08" Easing="QuadraticInOut" />
+						</WhilePressed>
+					</Rectangle>
+				</Panel>
+			</WhileTrue>
+
+			<PageControl ux:Name="pageControl" Active="{startingPage}" >
+				<MoviePage ux:Name="movies">
+					<WhileActive Threshold="0.1">
+						<Set tabBar.LayoutElement="movieTab"/>
+						<Change movieTab.textColor="#fed166" Duration="0.4"/>
+						<Callback Handler="{falseBackButton}"/>
+					</WhileActive>
+				</MoviePage>
+				<Genres ux:Name="genres">
+					<WhileActive Threshold="0.1">
+						<Set tabBar.LayoutElement="genreTab" />
+						<Change genreTab.textColor="#fed166" Duration="0.4"/>
+						<Callback Handler="{trueBackButton}"/>
+					</WhileActive>
+				</Genres>
+				<Year ux:Name="year">
+					<WhileActive Threshold="0.1">
+						<Set tabBar.LayoutElement="yearTab" />
+						<Change yearTab.textColor="#fed166" Duration="0.4"/>
+						<Callback Handler="{trueBackButton}"/>
+					</WhileActive>
+				</Year>
+			</PageControl>
+		</DockPanel>
+	</DockPanel>
+</DefaultPage>

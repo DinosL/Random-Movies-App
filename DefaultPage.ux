@@ -1,0 +1,11 @@
+<Page ux:Class="DefaultPage" Transition="None" >
+	<EnteringAnimation>
+		<Move X="-1" RelativeTo="Size" Duration="0.8" Easing="BackInOut" />
+	</EnteringAnimation>
+
+	<RemovingAnimation>
+		<Scale Factor="0.9" Duration=".3" Easing="QuadraticInOut" />
+		<Change this.Opacity="0" Duration=".3" Easing="QuadraticInOut" />
+		<Move Y="1" RelativeTo="Size" Duration=".4" Easing="CubicIn" />
+	</RemovingAnimation>
+</Page>

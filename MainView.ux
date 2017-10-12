@@ -1,0 +1,13 @@
+<App Background="#212831">
+	<JavaScript File="mainview.js" />
+
+	<Font ux:Global="appFont" File="VarelaRound-Regular.ttf" />
+	<Router ux:Name="router" />
+
+	<Navigator DefaultTemplate="splashscreen">
+		<SplashScreen ux:Template="splashscreen" router="router"/>
+		<IntroScreen ux:Template="introScreen" router="router"/>
+		<MainPage ux:Template="MainPage" router="router" />
+		<SideBar ux:Template="SideBar" router="router" />
+	</Navigator>
+</App>

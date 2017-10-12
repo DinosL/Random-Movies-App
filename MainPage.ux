@@ -1,0 +1,100 @@
+<DefaultPage ux:Class="MainPage">
+	<Router ux:Dependency="router"/>
+	<JavaScript File="mainPage.js" />
+
+	<DockPanel>
+		<StatusBarBackground Dock="Top" Background="#212831"/>
+		<BottomBarBackground Dock="Bottom" Background="#212831"/>
+		<WhileTrue Value="{canSwipe}">
+			<OnBackButton>
+				<Callback Handler="{clearList}" />
+				<HomeScreen Type="CallIntent" />
+			</OnBackButton>
+		</WhileTrue>
+
+		<DockPanel Background="#212831">
+			<SwipeGesture Direction="Right" ux:Name="SwipeRight" />
+			<Swiped Source="SwipeRight">
+				<Callback Handler="{navigatorActionSideBar}"/>
+			</Swiped>
+
+			<Grid Rows="auto,1*">
+				<StackPanel>
+					<Grid Columns="auto,1*"  Background="#212831" Margin="0,0,0,10">
+						<Panel Margin="7,5,5,5" Height="32" Width="32" HitTestMode="LocalBounds">
+							<Clicked Handler="{navigatorActionSideBar}"/>
+							<Rectangle ux:Name="topRectangle" Height="2" Width="26" Fill="#fed166">
+								<Translation Y="-9" ux:Name="topMenuTranslation" />
+								<Rotation ux:Name="topMenuRotation" />
+							</Rectangle>
+							<Rectangle ux:Name="middleRectangle" Height="2" Width="26" Fill="#fed166" />
+							<Rectangle ux:Name="bottomRectangle" Height="2" Width="26" Fill="#fed166">
+								<Translation Y="9" ux:Name="bottomMenuTranslation" />
+								<Rotation ux:Name="bottomMenuRotation" />
+							</Rectangle>
+							<WhilePressed>
+								<Scale Factor=".85" Duration=".08" Easing="QuadraticInOut" />
+							</WhilePressed>
+						</Panel>
+
+						<Text FontSize="22" Alignment="VerticalCenter" TextAlignment="Center"
+							Value="Movie Time" Padding="2" Font="appFont" TextColor="White" Margin="0,5,44,0"/>
+					</Grid>
+					<Rectangle Height="1" Margin="0,-10,0,0" Fill="#fed166" />
+				</StackPanel>
+				<Page ux:Name="moviePanel" Transition="None" >
+					<WhileTrue Value="{_progress}">
+						<Panel Width="150" Height="60">
+							<Panel ux:Name="loadingCirclePanel">
+								<Circle ux:Name="loadingCircle" Width="70%" Height="70%" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
+									<Stroke Width="2" Brush="#fff" />
+								</Circle>
+							</Panel>
+							<Circle Fill="#ffb700"/>	<!-- TODO megaliteri adi8esi -->
+						</Panel>
+						<WhileTrue ux:Name="loading" Value="true">
+							<Change loadCircle.Value="true" DelayBack="0"/>
+						</WhileTrue>
+						<WhileTrue ux:Name="loadCircle">
+							<Change loadingCircle.Opacity="1" Duration="0.3" Delay="0.2" DelayBack="0" DurationBack="0"/>
+							<Spin Target="loadingCircle" Frequency="2"/>
+							<Cycle Target="loadingCircle.LengthAngleDegrees" Low="30" High="300" Frequency="0.7" />
+						</WhileTrue>
+					</WhileTrue>
+
+					<Image File="icons/mainImage.png" Alignment="Center" Height="80%" Layer="Background" StretchMode="Uniform" />
+
+					<Panel ux:Name="pageControl">
+						<LinearNavigation ux:Name="navigation">
+							<NavigationMotion GotoEasing="CircularOut" GotoDuration="0.5" Overflow="Open"/>
+						</LinearNavigation>
+
+						<WhileTrue ux:Name="canSwipeCard" Value="{canSwipe}">
+							<SwipeNavigate ux:Name="swipeNavigate" ForwardDirection="Right"/>
+						</WhileTrue>
+
+						<WhileTrue Value="{movieExists}">
+							<Each Items="{movieList}">
+								<MovieCard/>
+							</Each>
+						</WhileTrue>
+						<WhileFalse Value="{movieExists}">
+							<noMovies />
+						</WhileFalse>
+					</Panel>
+
+					<Panel Alignment="Bottom" Padding="0,0,0,15">
+						<PageIndicator ux:Name="pageIndicator" Navigation="navigation" Dock="Bottom" Alignment="TopCenter">
+							<Circle ux:Template="Dot" ux:Name="dotFac" Color="#C6C6C9" Margin="5" Width="10" Height="20">
+								<ActivatingAnimation>
+									<Scale Factor="1.1"/>
+									<Change dotFac.Color="#fed166" />
+								</ActivatingAnimation>
+							</Circle>
+						</PageIndicator>
+					</Panel>
+				</Page>
+			</Grid>
+		</DockPanel>
+	</DockPanel>
+</DefaultPage>

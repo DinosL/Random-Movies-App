@@ -1,0 +1,25 @@
+<Page ux:Class="MoviePage">
+	<JavaScript File="MoviePage.js" />
+
+	<Panel ux:Class="Categories">
+		<Text ux:Name="text" Value="{item}" Font="appFont" FontSize="35" TextColor="#fff" Alignment="Center" Margin="0,0,0,0" />
+		<Clicked Handler="{clickAction}">
+            <Toggle Target="tagged"/>
+			<Callback Handler="{navigatorActionMainPage}"/>
+        </Clicked>
+		<WhilePressed>
+			<Scale Factor=".85" Duration=".08" Easing="QuadraticInOut" />
+		</WhilePressed>
+		<WhileTrue ux:Name="tagged" Value="{selected}">
+            <Change text.TextColor="#fed166"/>
+        </WhileTrue>
+	</Panel>
+
+	<Panel >
+		<StackPanel ItemSpacing="10" Margin="0,50,0,0">
+			<Each Items="{categoriesView}">
+				<Categories Alignment="Center" />
+			</Each>
+		</StackPanel>
+	</Panel>
+</Page>

@@ -1,0 +1,91 @@
+<DockPanel ux:Class="introSecondCard" >
+	<JavaScript File="introSecondCard.js"/>
+
+	<Panel ux:Name="infoPanel" Width="100%" Height="100%" Visibility="Hidden" Opacity="0.45">
+		<Rectangle Height="60%" Alignment="Bottom" Color="#212831">
+			<ScrollView>
+				<StackPanel ContentAlignment="Center" Alignment="Top" Width="90%" Margin="0,7,0,0">
+					<Text Value="{title}" TextColor="#fff" Font="appFont" FontSize="18" TextAlignment="Center" TextWrapping="Wrap" />
+					<Text Value="{genre}" TextColor="#fff" Font="appFont" FontSize="14" TextAlignment="Center" Opacity="0.65" TextWrapping="Wrap"/>
+					<Rectangle Color="#a0a1a5" Width="200" Height="28" CornerRadius="8" Margin="0,5,0,0">
+						<StackPanel Orientation="Horizontal" Padding="5,1,5,1" ItemSpacing="4" Alignment="Center">
+							<Image File="../icons/year.png" Height="18" />
+							<Text Value="{year}" FontSize="12" Alignment="BottomCenter" Color="White" Opacity="0.7" />
+							<Image File="../icons/rating.png" Height="18" />
+							<Text Value="{rating}" FontSize="12" Alignment="BottomCenter" Color="White" Opacity="0.7" />
+							<Image File="../icons/duration.png" Height="18" />
+							<Text Value="{duration}" FontSize="12" Alignment="BottomCenter" Color="White" Opacity="0.7" />
+						</StackPanel>
+					</Rectangle>
+					<Text Value="Synopsis" Color="White" Font="appFont" FontSize="16" Margin="0,15,0,0"/>
+					<Text Value="{plot}" Color="#b7bcc0" Font="appFont" FontSize="14" TextWrapping="Wrap" Margin="5,5,0,0" Width="100%" Alignment="Left"/>
+
+					<Divider/>
+						<ScrollView AllowedScrollDirections="Horizontal">
+							<StackPanel Orientation="Horizontal" ItemSpacing="0">
+								<Each Items="{actors}">
+									<StackPanel>
+										<Circle Height="50" Width="50" Color="#212831">
+											<ImageFill File="{profilePic}" />
+										</Circle>
+										<Text Value="{name}" FontSize="11" Color="White" Width="100" Font="appFont" TextAlignment="Center" TextWrapping="Wrap" Margin="0,5,0,0"/>
+										<Text Value="{character}" FontSize="11" Color="#b7bcc0" Width="100" Font="appFont" TextAlignment="Center" TextWrapping="Wrap"/>
+									</StackPanel>
+								</Each>
+							</StackPanel>
+						</ScrollView>
+					<Divider/>
+				</StackPanel>
+			</ScrollView>
+		</Rectangle>
+
+		<Rectangle Height="40%" Alignment="Top" Background="#212831" Layer="Overlay">
+			<Panel Width="100%" Height="25%" Alignment="Bottom">
+				<Circle Width="35" Height="35" Smoothness="2" Alignment="BottomRight" Margin="0,55,10,0">
+					<ImageFill File="../icons/trailerIcon.png" StretchMode="UniformToFill"/>
+				</Circle >
+			</Panel>
+			<Circle Height="35" Width="35" Alignment="TopLeft" Margin="3,5,0,0">
+				<Image File="../icons/back.png" Alignment="Center" StretchMode="Uniform" />
+			</Circle>
+			<ImageFill File="../icons/introIcons/showBackdrop.jpg" StretchMode="Scale9"/>
+		</Rectangle>
+	</Panel>
+
+	<Panel ux:Class="Hovering" TimeOn="0.5" TimeOff="0.5" Frequency="1">
+		<double ux:Property="TimeOn"/>
+		<double ux:Property="TimeOff"/>
+		<double ux:Property="Frequency"/>
+
+		<Image ux:Name="tap" File="../icons/introIcons/tapIcon.png" Width="45" Height="45">
+			<Scaling ux:Name="tapIconScalling" Y="0.6" X="0.65" />
+			<Rotation Degrees="-30"/>
+		</Image>
+		<Timeline ux:Name="scaleIcon">
+			<Change tapIconScalling.X="1" Duration="0.5" />
+			<Change tapIconScalling.Y="1" Duration="0.5" />
+			<Nothing Delay="{Property this.TimeOn}" Duration="{Property this.TimeOff}"/>
+		</Timeline>
+		<WhileTrue Value="true" Bypass="Never">
+			<Cycle Waveform="Sine" Target="scaleIcon.Progress" Frequency="{Property this.Frequency}" Low="0" High="1"/>
+		</WhileTrue>
+	</Panel>
+
+	<Panel ux:Name="cardPanel" Width="75%" MaxWidth="500" Height="70%" Alignment="Center">
+		<Clicked>
+			<Set infoPanel.Visibility="Visible"/>
+			<Toggle Target="activated"/>
+			<Set tapIcon.Visibility="Hidden"/>
+		</Clicked>
+
+		<Hovering ux:Name="tapIcon" TimeOn="0.2" TimeOff="1" Frequency="1.5" Visibility="Visible"/>
+
+		<WhileTrue ux:Name="activated">
+			<Change infoPanel.Opacity="1" Duration="0.4"/>
+		</WhileTrue>
+		<Rectangle ux:Name="topPanel" Layer="Background" CornerRadius="5">
+			<ImageFill File="../icons/introIcons/showPoster.jpg" StretchMode="Scale9"/>
+		</Rectangle>
+		<DropShadow />
+    </Panel>
+</DockPanel>

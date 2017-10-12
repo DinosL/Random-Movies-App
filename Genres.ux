@@ -1,0 +1,34 @@
+<Page ux:Class="Genres">
+	<JavaScript File="genres.js" />
+
+	<Panel ux:Class="Tags" ux:Name="tagPanel" Width="145" Height="100">
+		<ScrollingAnimation>
+			<Move RelativeTo="LayoutChange" X="1" Y="1" Duration="0.3" Easing="CircularInOut" />
+		</ScrollingAnimation>
+
+		<StackPanel Alignment="Center">
+			<Image ux:Name="image" File="{imageFile}" Width="50" Height="50" StretchMode="Scale9" Color="White"/>
+			<Text ux:Name="text" Value="{item}" FontSize="20" Font="appFont" TextColor="#fff" Alignment="Center" />
+			<Clicked Handler="{addHandler}">
+				<Toggle Target="tagged"/>
+			</Clicked>
+			<WhilePressed>
+				<Scale Factor=".85" Duration=".08" Easing="QuadraticInOut" />
+			</WhilePressed>
+		</StackPanel>
+
+		<WhileTrue ux:Name="tagged">
+			<Change image.Color="#fed166"/>
+			<Change text.Color="#fed166"/>
+		</WhileTrue>
+	</Panel>
+
+	<ScrollView AllowedScrollDirections="Vertical">
+		<Panel Margin="0,15,0,40">
+			<ColumnLayout ColumnSize="145" Sizing="Fill"/>
+			<Each Items="{genreItem}">
+				<Tags />
+			</Each>
+		</Panel>
+	</ScrollView>
+</Page>

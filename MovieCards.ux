@@ -1,0 +1,147 @@
+<DockPanel ux:Class="MovieCard" >
+    <Scaling ux:Name="pageScaling" Factor="0.95" />
+    <ActivatingAnimation>
+		<Change cardPanel.Opacity="1" Duration="0.5" />
+		<Change pageScaling.Factor="1" Duration="0.5" />
+    </ActivatingAnimation>
+
+    <EnteringAnimation Scale="0.5">
+        <Move X="-1.6" RelativeTo="Size" Duration="0.5" />
+    </EnteringAnimation>
+    <ExitingAnimation Scale="0.5">
+        <Move X="1.6" RelativeTo="Size" Duration="0.5" />
+    </ExitingAnimation>
+
+	<Rectangle ux:Class="Divider" Color="White" Width="100%" Height="2" CornerRadius="10" Margin="0,8,0,8" />
+
+	<Panel ux:Name="infoPanel" Width="100%" Height="100%" X="100%" Visibility="Hidden" Opacity="0">
+		<OnBackButton Handler="{back}"/>
+		<WhileTrue Value="{infoAnimation}">
+			<Change infoPanel.X="0" Duration="0.5"/>
+			<Change cardPanel.Opacity="0" Duration="0.5" />
+			<Change infoPanel.Opacity = "1" Duration="0.5"/>
+		</WhileTrue>
+		<ActivatingAnimation>
+			<Change infoPanel.Visibility="Visible"/>
+		</ActivatingAnimation>
+
+		<SwipeGesture ux:Name="closeInfoPanelSwipe" Direction="Right" Type="Simple" Length="100" />
+		<SwipingAnimation Source="closeInfoPanelSwipe" >
+			<Change infoPanel.X="100%" Duration="0.5"/>
+		</SwipingAnimation>
+		<Swiped Source="closeInfoPanelSwipe">
+		   	<Callback Handler="{click}"/>
+		</Swiped>
+
+		<Rectangle Height="60%" Alignment="Bottom" Color="#212831">
+			<Panel Width="100%" Height="50" Alignment="Top" >
+				<WhileTrue Value="{hasTrailer}">
+					<Circle Width="50" Height="50" Smoothness="2" Alignment="CenterRight" Margin="0,0,15,50">
+						<Clicked Handler="{openLink}"/>
+						<ImageFill File="icons/trailerIcon.png" StretchMode="UniformToFill"/>
+					</Circle >
+				</WhileTrue>
+			</Panel>
+			<ScrollView>
+				<StackPanel ContentAlignment="Center" Alignment="Top" Width="90%" Margin="0,20,0,0">
+					<Text Value="{title}" TextColor="#fff" Font="appFont" FontSize="20" TextAlignment="Center" TextWrapping="Wrap" />
+					<Text Value="{genre}" TextColor="#fff" Font="appFont" FontSize="16" TextAlignment="Center" Opacity="0.65" TextWrapping="Wrap"/>
+					<Rectangle Color="#a0a1a5" Width="225" Height="28" CornerRadius="8" Margin="0,5,0,0">
+						<StackPanel Orientation="Horizontal" Padding="5,1,5,1" ItemSpacing="7" Alignment="Center">
+							<Image File="icons/year.png" Height="24" />
+							<Text Value="{year}" FontSize="15" Alignment="Center" Color="White" Opacity="0.7" />
+							<Image File="icons/rating.png" Height="24" />
+							<Text Value="{rating}" FontSize="15" Alignment="Center" Color="White" Opacity="0.7" />
+							<Image File="icons/duration.png" Height="24" />
+							<Text Value="{duration}" FontSize="15" Alignment="Center" Color="White" Opacity="0.7" />
+						</StackPanel>
+					</Rectangle>
+					<Text Value="Synopsis" Color="White" Font="appFont" FontSize="18" Margin="0,15,0,0"/>
+					<Text Value="{plot}" Color="#b7bcc0" Font="appFont" TextWrapping="Wrap" Margin="5,5,0,0" Width="100%" Alignment="Left"/>
+
+					<Divider/>
+						<ScrollView AllowedScrollDirections="Horizontal">
+							<StackPanel Orientation="Horizontal" ItemSpacing="0">
+								<Each Items="{actors}">
+									<ActorIcon/>
+								</Each>
+							</StackPanel>
+						</ScrollView>
+					<Divider/>
+				</StackPanel>
+			</ScrollView>
+		</Rectangle>
+
+		<FileImageSource ux:Key="noImage" File="{backPoster}"/>
+		<HttpImageSource ux:Key="image" Url="{backdrop_path}"/>
+
+		<Rectangle Height="40%" Alignment="Top" Background="#212831">
+			<Circle Height="40" Width="40" Alignment="TopLeft" Margin="3,0,0,0">
+				<Clicked Handler="{click}" />
+				<Image File="icons/back.png" Alignment="Center" StretchMode="UniformToFill" />
+			</Circle>
+			<ImageFill Source="{DataToResource backPosterKey}" StretchMode="Scale9"/>
+		</Rectangle>
+	</Panel>
+
+	<FileImageSource ux:Key="noImage" File="{frontPoster}"/>
+	<HttpImageSource ux:Key="image" Url="{poster_path}"/>
+
+    <Panel ux:Name="cardPanel" Width="70%" MaxWidth="500" Height="70%" Alignment="Center" Opacity="0.45">
+		<WhileActive>
+			<Tapped ux:Name="tap" Handler="{click}"/>
+
+			<SwipeGesture ux:Name="swipe" Direction="Up" Type="Active" />
+		    <SwipingAnimation Source="swipe">
+		    	<Move Target="cardPanel" Y="-0.25" RelativeTo="Size" Duration="0.5" />
+			    <Change bottomPanelScaling.X="1" Duration="0.5" />
+			    <Change bottomPanelScaling.Y="1" Duration="0.5" />
+			    <Change bottomPanel.Opacity="1" Duration="0.5" />
+		    </SwipingAnimation>
+		</WhileActive>
+
+		<WhileInactive Threshold="0.2">
+			<SetSwipeActive Target="swipe" Value="false" />
+		</WhileInactive>
+		<Rectangle ux:Name="topPanel" Layer="Background" CornerRadius="5">
+			<ImageFill Source="{DataToResource frontPosterKey}" StretchMode="Scale9"/>
+		</Rectangle>
+		<DropShadow />
+    </Panel>
+
+	<Panel ux:Name="bottomPanel" Width="80%" MaxWidth="550" Height="80%" MaxHeight="600" Opacity="0">
+      	<Rectangle Layer="Background" Color="White" CornerRadius="5" />
+      	<Scaling ux:Name="bottomPanelScaling" Y="0.8" X="0.85" />
+
+		<ScrollView Alignment="Bottom" Height="25%">
+			<StackPanel ContentAlignment="Top" Alignment="VerticalCenter" Margin="5" ItemSpacing="5">
+				<Grid Columns="8*,2*">
+					<Text Value="{shorterTitle}" Font="appFont" FontSize="20" TextWrapping="Wrap" Column="0" TextColor="#000" TextAlignment="Left" Margin="3,0,0,0" />
+					<Grid Columns="auto,auto" >
+	                    <Image File="icons/duration.png" Height="17" Width="17" Color="Black" Alignment="Center"/>
+	                    <Text Value="{runtime}" Font="appFont" FontSize="14" Column="1" TextColor="#000" Opacity="0.7" Margin="3,4,0,0" Alignment="Center"/>
+	                </Grid>
+				</Grid>
+
+				<Grid Columns="7*,3*">
+	    			<Text Value="{lessGenres}" Column="0" Font="appFont" FontSize="12" TextWrapping="Wrap" TextColor="#000" TextAlignment="Left" Opacity="0.6" Margin="3,0,0,0" />
+					<Rectangle Width="100%" Height="20" Column="1">
+						<Panel Height="20" Alignment="Center">
+							<Image File="icons/Stars2.png" Height="20"/>
+							<Rectangle Width="{starWidth}" Height="16" Color="#ffb700" Alignment="Left"/>
+							<Image File="icons/Stars.png" Height="20"/>
+						</Panel>
+					</Rectangle>
+	            </Grid>
+				<Grid Rows="auto,auto" Columns="auto,auto" Alignment="Bottom" Margin="3,0,0,0">
+					<Text Value="Director: " Font="appFont" FontSize="14" Row="0" Column="0" TextColor="#000" Alignment="Left" Margin="0,0,0,0" />
+					<Text Value="{directors}" Font="appFont" FontSize="14" Row="0" Column="1" TextColor="#000" Opacity="0.7" TextAlignment="Center" Alignment="CenterLeft" Margin="3,0,0,0" />
+					<Text Value="Starring: " Font="appFont" FontSize="14" Row="1" Column="0" TextColor="#000" TextAlignment="Center" Alignment="Left" Margin="0,0,0,0" />
+					<Text Value="{cast}" Font="appFont" FontSize="14" Row="1" Column="1" TextColor="#000" Opacity="0.7" TextAlignment="Center" Alignment="CenterLeft" Margin="3,0,0,0" />
+				</Grid>
+			</StackPanel>
+		</ScrollView>
+      	<DropShadow />
+    </Panel>
+
+</DockPanel>

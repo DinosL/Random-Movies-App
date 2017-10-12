@@ -1,0 +1,8 @@
+<DefaultPage ux:Class="SplashScreen" Background="#212831">
+	<Router ux:Dependency="router"/>
+
+	<DockPanel>
+		<StatusBarBackground Dock="Top" Background="#212831"/>
+		<Image File="icons/ic_launcher.png" Height="150"/>
+	</DockPanel>
+</DefaultPage>
